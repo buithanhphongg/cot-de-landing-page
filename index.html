@@ -10,10 +10,227 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
-    <script type="module" src="./src/app.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Đi đến nội dung</a>
     <div id="app"></div>
+    <script>
+// Public destinations and bilingual editorial copy live in one place.
+const links = {
+  youtube: 'https://www.youtube.com/@Cot_De',
+  tiktok: 'https://www.tiktok.com/@cot_de',
+  bao: 'https://www.facebook.com/Bbao23.fb',
+  phong: 'https://www.facebook.com/thanh.phong.799769',
+};
+
+const content = {
+  vi: {
+    skipLink: 'Đi đến nội dung',
+    metaDescription: 'Cốt Đê giải thích lập trình, thuật toán, môn học CNTT và AI theo cách dễ hiểu cho cả người chưa học code.',
+    nav: ['Về Cốt Đê', 'Nội dung', 'Theo dõi', 'Liên hệ'],
+    headerCta: 'Xem YouTube',
+    eyebrow: 'MỘT GÓC HỌC CÔNG NGHỆ',
+    heroTitle: 'Code kể cho <em>dễ hiểu.</em>',
+    heroBody: 'Từ dòng code đầu tiên đến những môn học khó nhằn ở đại học. Phong và Bảo giải thích bằng ví dụ gần gũi, để người chưa học code cũng theo kịp.',
+    heroPrimary: 'Xem video trên YouTube',
+    heroSecondary: 'Khám phá nội dung',
+    photoCaption: 'Phong (áo xanh) và Bảo (áo trắng) — hai người đứng sau Cốt Đê.',
+    aboutIndex: '01 / VỀ CHÚNG MÌNH',
+    aboutTitle: 'Hai người học code. Một cách kể chuyện khác.',
+    aboutBody: 'Cốt Đê được làm bởi Phong và Bảo, hai sinh viên CNTT muốn kéo kiến thức công nghệ ra khỏi những trang giáo trình khó đọc. Tụi mình bắt đầu từ câu hỏi đơn giản: “Giải thích sao để bạn mình cũng hiểu?”',
+    aboutAside: 'Không cần biết lập trình trước khi bắt đầu.',
+    topicsIndex: '02 / NỘI DUNG',
+    topicsTitle: 'Bắt đầu ở chỗ bạn đang đứng.',
+    topicsIntro: 'Chọn một chủ đề. Mỗi video đi từ một câu hỏi cụ thể, rồi gỡ từng nút thắt.',
+    topics: [
+      { number: '01', title: 'Lập trình từ số 0', description: 'Biến, vòng lặp, hàm và cách đọc một đoạn code đầu tiên.' },
+      { number: '02', title: 'Thuật toán & tư duy', description: 'Hiểu cách một lời giải hoạt động trước khi học thuộc code.' },
+      { number: '03', title: 'Môn học CNTT', description: 'Cấu trúc dữ liệu, OOP, cơ sở dữ liệu và mạng máy tính.' },
+      { number: '04', title: 'AI trong thực tế', description: 'Công cụ AI, cách đặt câu hỏi và dùng AI có kiểm chứng.' },
+    ],
+    channelsIndex: '03 / THEO DÕI',
+    channelsTitle: 'Gặp tụi mình ở đây.',
+    channels: [
+      { key: 'youtube', label: 'YouTube', handle: '@Cot_De', description: 'Video giải thích dài và các series học tập', action: 'Xem kênh' },
+      { key: 'tiktok', label: 'TikTok', handle: '@cot_de', description: 'Video ngắn về code và chuyện học CNTT', action: 'Theo dõi' },
+    ],
+    contactIndex: '04 / LIÊN HỆ',
+    contactTitle: 'Có chuyện muốn cùng làm?',
+    contactBody: 'Hợp tác nội dung, chia sẻ trải nghiệm học công nghệ hay đơn giản là một lời chào — cứ nhắn cho Phong hoặc Bảo.',
+    contactBao: 'Nhắn Bảo',
+    contactPhong: 'Nhắn Phong',
+    footerLine: 'Nơi đến người không học code cũng hiểu.',
+    newWindow: 'mở trong tab mới',
+  },
+  en: {
+    skipLink: 'Skip to content',
+    metaDescription: 'Cốt Đê explains coding, algorithms, university CS and AI in a way even non-coders can follow.',
+    nav: ['About', 'Topics', 'Channels', 'Contact'],
+    headerCta: 'Watch YouTube',
+    eyebrow: 'A PLACE TO LEARN TECH',
+    heroTitle: 'Code, explained <em>plainly.</em>',
+    heroBody: 'From your first line of code to the tougher CS courses at university. Phong and Bảo use familiar examples so newcomers can follow along.',
+    heroPrimary: 'Watch on YouTube',
+    heroSecondary: 'Explore topics',
+    photoCaption: 'Phong (in blue) and Bảo (in white) — the people behind Cốt Đê.',
+    aboutIndex: '01 / ABOUT US',
+    aboutTitle: 'Two CS students. A different way to explain.',
+    aboutBody: 'Cốt Đê is made by Phong and Bảo, two CS students who want to bring tech ideas out of hard-to-read textbooks. We start with a simple question: “How would we explain this to a friend?”',
+    aboutAside: 'You do not need to know how to code to start.',
+    topicsIndex: '02 / TOPICS',
+    topicsTitle: 'Start where you are.',
+    topicsIntro: 'Pick a topic. Each video starts with a concrete question and works through it step by step.',
+    topics: [
+      { number: '01', title: 'Coding from zero', description: 'Variables, loops, functions, and reading your first piece of code.' },
+      { number: '02', title: 'Algorithms & thinking', description: 'Understand why a solution works before memorizing its code.' },
+      { number: '03', title: 'University CS', description: 'Data structures, OOP, databases, and computer networks.' },
+      { number: '04', title: 'AI in practice', description: 'AI tools, better questions, and ways to verify the output.' },
+    ],
+    channelsIndex: '03 / FOLLOW ALONG',
+    channelsTitle: 'Find us here.',
+    channels: [
+      { key: 'youtube', label: 'YouTube', handle: '@Cot_De', description: 'Longer explanations and learning series', action: 'Visit channel' },
+      { key: 'tiktok', label: 'TikTok', handle: '@cot_de', description: 'Short videos about code and studying CS', action: 'Follow' },
+    ],
+    contactIndex: '04 / CONTACT',
+    contactTitle: 'Want to make something together?',
+    contactBody: 'For content collaborations, conversations about learning tech, or just a hello, send Phong or Bảo a message.',
+    contactBao: 'Message Bảo',
+    contactPhong: 'Message Phong',
+    footerLine: 'A place where even non-coders get it.',
+    newWindow: 'opens in a new tab',
+  },
+};
+
+
+
+const app = document.querySelector('#app');
+const sections = ['about', 'topics', 'channels', 'contact'];
+const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+})[character]);
+
+function externalLink(url, label, className, newWindowText) {
+  return `<a class="${className}" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(label)} (${escapeHtml(newWindowText)})">${escapeHtml(label)} <span aria-hidden="true">↗</span></a>`;
+}
+
+function render(lang) {
+  const t = content[lang];
+  document.documentElement.lang = lang;
+  document.title = lang === 'vi' ? 'Cốt Đê — Code kể cho dễ hiểu' : 'Cốt Đê — Code, explained plainly';
+  document.querySelector('.skip-link').textContent = t.skipLink;
+  document.querySelector('meta[name="description"]').content = t.metaDescription;
+  app.innerHTML = `
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="wordmark" href="#top" aria-label="Cốt Đê — home">CỐT<span>ĐÊ</span><i aria-hidden="true">.</i></a>
+        <nav class="main-nav" aria-label="${lang === 'vi' ? 'Điều hướng chính' : 'Main navigation'}">
+          ${sections.map((section, index) => `<a href="#${section}">${escapeHtml(t.nav[index])}</a>`).join('')}
+        </nav>
+        <div class="header-actions">
+          <div class="language-switch" aria-label="Language">
+            <button type="button" data-lang="vi" aria-pressed="${lang === 'vi'}">VI</button>
+            <span aria-hidden="true">/</span>
+            <button type="button" data-lang="en" aria-pressed="${lang === 'en'}">EN</button>
+          </div>
+          ${externalLink(links.youtube, t.headerCta, 'header-link', t.newWindow)}
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero shell" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-mark" aria-hidden="true"></span>${escapeHtml(t.eyebrow)}</p>
+          <h1 id="hero-title">${t.heroTitle}</h1>
+          <p class="hero-body">${escapeHtml(t.heroBody)}</p>
+          <div class="hero-actions">
+            ${externalLink(links.youtube, t.heroPrimary, 'button button-dark', t.newWindow)}
+            <a class="text-link" href="#topics">${escapeHtml(t.heroSecondary)} <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="hero-stamp" aria-hidden="true"><span>CỐT ĐÊ</span><span>TECH, MADE HUMAN</span></div>
+        </div>
+        <figure class="hero-figure">
+          <img src="./founders.jpg" alt="${lang === 'vi' ? 'Phong mặc áo dài xanh đứng cạnh Bảo mặc áo dài trắng ở sân vườn' : 'Phong in blue and Bảo in white in a garden'}" width="1024" height="1024" fetchpriority="high" />
+          <figcaption><span>FIG. 01</span>${escapeHtml(t.photoCaption)}</figcaption>
+        </figure>
+      </section>
+
+      <section class="section section-about" id="about" aria-labelledby="about-title">
+        <div class="shell section-grid">
+          <p class="section-index">${escapeHtml(t.aboutIndex)}</p>
+          <div class="section-main about-main">
+            <h2 id="about-title">${escapeHtml(t.aboutTitle)}</h2>
+            <p>${escapeHtml(t.aboutBody)}</p>
+          </div>
+          <p class="about-note"><span aria-hidden="true">↳</span>${escapeHtml(t.aboutAside)}</p>
+        </div>
+      </section>
+
+      <section class="section section-topics" id="topics" aria-labelledby="topics-title">
+        <div class="shell section-grid">
+          <p class="section-index">${escapeHtml(t.topicsIndex)}</p>
+          <div class="section-main">
+            <div class="section-heading">
+              <h2 id="topics-title">${escapeHtml(t.topicsTitle)}</h2>
+              <p>${escapeHtml(t.topicsIntro)}</p>
+            </div>
+            <div class="topic-list">
+              ${t.topics.map((topic) => `<article class="topic-row"><span class="topic-number">${topic.number}</span><h3>${escapeHtml(topic.title)}</h3><p>${escapeHtml(topic.description)}</p><span class="topic-arrow" aria-hidden="true">↗</span></article>`).join('')}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-channels" id="channels" aria-labelledby="channels-title">
+        <div class="shell section-grid">
+          <p class="section-index">${escapeHtml(t.channelsIndex)}</p>
+          <div class="section-main">
+            <h2 id="channels-title">${escapeHtml(t.channelsTitle)}</h2>
+            <div class="channel-list">
+              ${t.channels.map((channel) => `<a class="channel" href="${links[channel.key]}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(channel.label)} ${escapeHtml(channel.handle)} (${escapeHtml(t.newWindow)})"><span class="channel-name">${escapeHtml(channel.label)} <small>${escapeHtml(channel.handle)}</small></span><span class="channel-desc">${escapeHtml(channel.description)}</span><span class="channel-action">${escapeHtml(channel.action)} ↗</span></a>`).join('')}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-contact" id="contact" aria-labelledby="contact-title">
+        <div class="shell section-grid">
+          <p class="section-index">${escapeHtml(t.contactIndex)}</p>
+          <div class="section-main contact-main">
+            <h2 id="contact-title">${escapeHtml(t.contactTitle)}</h2>
+            <p>${escapeHtml(t.contactBody)}</p>
+            <div class="contact-actions">
+              ${externalLink(links.bao, t.contactBao, 'button button-light', t.newWindow)}
+              ${externalLink(links.phong, t.contactPhong, 'button button-outline', t.newWindow)}
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-top"><a class="wordmark" href="#top">CỐT<span>ĐÊ</span><i aria-hidden="true">.</i></a><p>${escapeHtml(t.footerLine)}</p></div>
+      <div class="shell footer-bottom"><span>© ${new Date().getFullYear()} Cốt Đê</span><span>Phong & Bảo</span></div>
+    </footer>`;
+
+  app.querySelectorAll('[data-lang]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const nextLang = button.dataset.lang;
+      if (nextLang === lang) return;
+      try { localStorage.setItem('cotde_lang', nextLang); } catch { /* Preferences may be unavailable. */ }
+      render(nextLang);
+    });
+  });
+}
+
+let preferredLanguage = 'vi';
+try {
+  const savedLanguage = localStorage.getItem('cotde_lang');
+  if (savedLanguage in content) preferredLanguage = savedLanguage;
+} catch { /* Use Vietnamese when storage is unavailable. */ }
+render(preferredLanguage);
+
+    </script>
   </body>
 </html>
