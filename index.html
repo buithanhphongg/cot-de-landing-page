@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cốt Đê | Where even non-coders get it</title>
+  
+  <!-- Google Fonts: Be Vietnam Pro & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Be Vietnam Pro"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              dark: '#080312',
+              surface: '#120824',
+              card: '#1a0c33',
+              border: '#2f185c',
+              purple: '#8b5cf6',
+              violet: '#a855f7',
+              neon: '#ccff00',
+              cyan: '#06b6d4',
+            }
+          },
+          boxShadow: {
+            'glow-purple': '0 0 30px -5px rgba(168, 85, 247, 0.35)',
+            'glow-neon': '0 0 25px -5px rgba(204, 255, 0, 0.4)',
+            'glow-cyan': '0 0 25px -5px rgba(6, 182, 212, 0.35)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #080312;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2f185c;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8b5cf6;
+    }
+
+    /* Ambient Background Glow */
+    .ambient-glow {
+      background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.18) 0%, rgba(8, 3, 18, 0) 65%),
+                  radial-gradient(circle at 10% 30%, rgba(6, 182, 212, 0.12) 0%, rgba(8, 3, 18, 0) 50%),
+                  radial-gradient(circle at 90% 70%, rgba(168, 85, 247, 0.14) 0%, rgba(8, 3, 18, 0) 50%);
+    }
+
+    /* Code grid pattern overlay */
+    .bg-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="bg-brand-dark text-slate-100 font-sans antialiased ambient-glow bg-grid min-h-screen selection:bg-brand-neon selection:text-black">
+
+  <!-- ==================== HEADER (Sticky Glassmorphism) ==================== -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-brand-dark/80 border-b border-brand-border/60 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-purple to-brand-cyan flex items-center justify-center font-mono font-bold text-white shadow-glow-purple group-hover:scale-105 transition-transform">
+          &lt;/&gt;
+        </div>
+        <div>
+          <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-white via-purple-200 to-brand-neon bg-clip-text text-transparent">
+            CỐT ĐÊ
+          </span>
+          <span class="hidden sm:inline-block ml-2 text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-brand-surface border border-brand-border text-brand-neon">
+            Tech &amp; Fun
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+        <a href="#about" class="hover:text-brand-neon transition-colors" data-i18n="nav.founders">Founders</a>
+        <a href="#topics" class="hover:text-brand-neon transition-colors" data-i18n="nav.topics">Topics</a>
+        <a href="#bio-links" class="hover:text-brand-neon transition-colors" data-i18n="nav.links">Channels</a>
+        <a href="#contact" class="hover:text-brand-neon transition-colors" data-i18n="nav.contact">Work Contact</a>
+      </nav>
+
+      <!-- Right Action: Language Switcher -->
+      <div class="flex items-center gap-3">
+        <!-- Language Switcher Pill -->
+        <div class="flex items-center bg-brand-surface p-1 rounded-full border border-brand-border text-xs font-bold font-mono">
+          <button id="lang-en" onclick="setLanguage('en')" class="px-2.5 py-1 rounded-full transition-all duration-200 bg-brand-purple text-white shadow-sm">
+            EN
+          </button>
+          <button id="lang-vi" onclick="setLanguage('vi')" class="px-2.5 py-1 rounded-full transition-all duration-200 text-slate-400 hover:text-white">
+            VI
+          </button>
+        </div>
+
+        <!-- Quick Subscribe button (mobile & desktop) -->
+        <a href="https://www.youtube.com/@Cot_De" target="_blank" rel="noopener noreferrer" 
+           class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-500 hover:to-purple-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-lg hover:shadow-red-500/20 transition-all hover:scale-105">
+          <i data-lucide="youtube" class="w-4 h-4"></i>
+          <span data-i18n="header.subscribe">Subscribe</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section id="hero" class="relative pt-12 pb-20 sm:pt-20 sm:pb-32 overflow-hidden">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10">
+      
+      <!-- Top Pill Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-surface/90 border border-brand-purple/50 shadow-glow-purple text-xs sm:text-sm font-medium mb-6">
+        <span class="w-2 h-2 rounded-full bg-brand-neon animate-pulse"></span>
+        <span class="text-brand-neon font-mono font-semibold" data-i18n="hero.badge">✨ GEN Z TECH COMMUNITY</span>
+      </div>
+
+      <!-- Main Catchy Title -->
+      <h1 class="text-5xl sm:text-7xl font-extrabold tracking-tight mb-4">
+        <span class="bg-gradient-to-r from-white via-purple-100 to-brand-neon bg-clip-text text-transparent">
+          CỐT ĐÊ
+        </span>
+      </h1>
+
+      <!-- Slogan -->
+      <p class="text-xl sm:text-3xl font-bold text-brand-neon font-mono mb-6 tracking-wide drop-shadow" data-i18n="hero.slogan">
+        “Where even non-coders get it.”
+      </p>
+
+      <!-- Subtitle Description -->
+      <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed" data-i18n="hero.description">
+        Demystifying coding, algorithms, CS university subjects, and AI with zero toxicity and 100% good vibes. Made by students, for future tech wizards.
+      </p>
+
+      <!-- Primary & Secondary CTA Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+        <a href="https://www.youtube.com/@Cot_De" target="_blank" rel="noopener noreferrer" 
+           class="w-full sm:w-auto flex items-center justify-center gap-3 bg-gradient-to-r from-brand-purple to-brand-violet hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-8 py-4 rounded-2xl shadow-glow-purple hover:scale-105 transition-all text-base">
+          <i data-lucide="youtube" class="w-5 h-5 text-red-400"></i>
+          <span data-i18n="hero.cta.youtube">Watch on YouTube</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 opacity-75"></i>
+        </a>
+
+        <a href="https://www.tiktok.com/@cot_de" target="_blank" rel="noopener noreferrer" 
+           class="w-full sm:w-auto flex items-center justify-center gap-3 bg-brand-surface hover:bg-brand-card border border-brand-border hover:border-brand-neon/60 text-slate-200 hover:text-white font-bold px-8 py-4 rounded-2xl transition-all hover:scale-105 text-base">
+          <i data-lucide="smartphone" class="w-5 h-5 text-brand-neon"></i>
+          <span data-i18n="hero.cta.tiktok">Follow on TikTok</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 opacity-75"></i>
+        </a>
+      </div>
+
+      <!-- Quick Trust Indicators -->
+      <div class="grid grid-cols-3 gap-3 sm:gap-6 mt-14 max-w-xl mx-auto pt-8 border-t border-brand-border/40">
+        <div class="p-3 rounded-xl bg-brand-surface/50 border border-brand-border/40">
+          <div class="font-extrabold text-xl sm:text-2xl text-brand-neon font-mono">02</div>
+          <div class="text-xs text-slate-400" data-i18n="stats.founders">Co-Founders</div>
+        </div>
+        <div class="p-3 rounded-xl bg-brand-surface/50 border border-brand-border/40">
+          <div class="font-extrabold text-xl sm:text-2xl text-brand-purple font-mono">100%</div>
+          <div class="text-xs text-slate-400" data-i18n="stats.free">Free Knowledge</div>
+        </div>
+        <div class="p-3 rounded-xl bg-brand-surface/50 border border-brand-border/40">
+          <div class="font-extrabold text-xl sm:text-2xl text-brand-cyan font-mono">0%</div>
+          <div class="text-xs text-slate-400" data-i18n="stats.boring">Boring Theory</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== FOUNDERS SECTION ==================== -->
+  <section id="about" class="py-20 bg-brand-surface/40 border-y border-brand-border/50 relative">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <h2 class="text-xs font-mono font-bold text-brand-neon uppercase tracking-widest mb-2" data-i18n="founders.tag">
+          // THE MINDS BEHIND THE CODE
+        </h2>
+        <h3 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="founders.title">
+          Meet Phong &amp; Bảo
+        </h3>
+        <p class="text-slate-400 text-sm sm:text-base mt-3" data-i18n="founders.subtitle">
+          Two passionate CS students with a mission to make software development friendly, entertaining, and accessible to everyone.
+        </p>
+      </div>
+
+      <!-- Central Hero Photo of Founders in Ao Dai -->
+      <div class="max-w-3xl mx-auto">
+        <div class="relative group rounded-3xl overflow-hidden border-2 border-brand-border bg-brand-card shadow-glow-purple">
+          <div class="aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden bg-brand-surface">
+            <img src="./founders.jpg" alt="Phong & Bảo - Cốt Đê Founders" 
+                 class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="py-3 px-4 bg-brand-card/90 border-t border-brand-border/40 text-center">
+            <p class="text-sm font-medium text-slate-300 font-mono tracking-wide" data-i18n="founders.photoSimple">
+              Phong (áo xanh) • Bảo (áo trắng)
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== CORE TOPICS SECTION ==================== -->
+  <section id="topics" class="py-20 relative">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <h2 class="text-xs font-mono font-bold text-brand-cyan uppercase tracking-widest mb-2" data-i18n="topics.tag">
+          // WHAT WE TEACH
+        </h2>
+        <h3 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="topics.title">
+          Core Pillars of Cốt Đê
+        </h3>
+        <p class="text-slate-400 text-sm sm:text-base mt-3" data-i18n="topics.subtitle">
+          From absolute zero to cracking university exams and exploring next-gen artificial intelligence.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Topic 1 -->
+        <div class="p-6 rounded-3xl bg-brand-card/70 border border-brand-border hover:border-brand-purple hover:bg-brand-card transition-all duration-300 group">
+          <div class="w-12 h-12 rounded-2xl bg-purple-900/50 border border-purple-500/40 flex items-center justify-center text-purple-400 mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="terminal" class="w-6 h-6"></i>
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2" data-i18n="topics.t1.title">Code From Scratch</h4>
+          <p class="text-slate-400 text-sm leading-relaxed" data-i18n="topics.t1.desc">
+            No prerequisites needed. Start your coding adventure from line one with zero headaches.
+          </p>
+        </div>
+
+        <!-- Topic 2 -->
+        <div class="p-6 rounded-3xl bg-brand-card/70 border border-brand-border hover:border-brand-neon hover:bg-brand-card transition-all duration-300 group">
+          <div class="w-12 h-12 rounded-2xl bg-lime-950/50 border border-brand-neon/40 flex items-center justify-center text-brand-neon mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="git-branch" class="w-6 h-6"></i>
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2" data-i18n="topics.t2.title">Simple Algorithms</h4>
+          <p class="text-slate-400 text-sm leading-relaxed" data-i18n="topics.t2.desc">
+            Visualized and explained so simply that even your grandmother would pass a technical interview.
+          </p>
+        </div>
+
+        <!-- Topic 3 -->
+        <div class="p-6 rounded-3xl bg-brand-card/70 border border-brand-border hover:border-brand-cyan hover:bg-brand-card transition-all duration-300 group">
+          <div class="w-12 h-12 rounded-2xl bg-cyan-950/50 border border-brand-cyan/40 flex items-center justify-center text-brand-cyan mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2" data-i18n="topics.t3.title">CS College Prep</h4>
+          <p class="text-slate-400 text-sm leading-relaxed" data-i18n="topics.t3.desc">
+            Survive and conquer university subjects: Data Structures, OOP, Databases, and Computer Networks.
+          </p>
+        </div>
+
+        <!-- Topic 4 -->
+        <div class="p-6 rounded-3xl bg-brand-card/70 border border-brand-border hover:border-pink-500 hover:bg-brand-card transition-all duration-300 group">
+          <div class="w-12 h-12 rounded-2xl bg-pink-950/50 border border-pink-500/40 flex items-center justify-center text-pink-400 mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="cpu" class="w-6 h-6"></i>
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2" data-i18n="topics.t4.title">AI &amp; Modern Tech</h4>
+          <p class="text-slate-400 text-sm leading-relaxed" data-i18n="topics.t4.desc">
+            Practical AI tools, prompting tips, and modern engineering workflows that boost your superpowers.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== BIO LINKS SECTION ==================== -->
+  <section id="bio-links" class="py-20 bg-brand-surface/60 border-t border-brand-border/60">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6">
+      
+      <div class="text-center mb-10">
+        <h2 class="text-xs font-mono font-bold text-brand-neon uppercase tracking-widest mb-2" data-i18n="biolinks.tag">
+          // OFFICIAL CHANNELS
+        </h2>
+        <h3 class="text-3xl font-extrabold text-white" data-i18n="biolinks.title">
+          Follow Cốt Đê
+        </h3>
+        <p class="text-slate-400 text-sm mt-2" data-i18n="biolinks.subtitle">
+          Tap below to join our growing community of tech enthusiasts!
+        </p>
+      </div>
+
+      <!-- Bio Link Cards -->
+      <div class="space-y-4">
+        
+        <!-- YouTube Bio Link -->
+        <a href="https://www.youtube.com/@Cot_De" target="_blank" rel="noopener noreferrer"
+           class="group flex items-center justify-between p-5 rounded-2xl bg-brand-card border border-red-500/30 hover:border-red-500 hover:bg-red-950/20 shadow-lg hover:shadow-red-500/10 transition-all hover:scale-[1.02]">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-red-600/20 border border-red-500/50 flex items-center justify-center text-red-500 group-hover:scale-110 transition-transform">
+              <i data-lucide="youtube" class="w-6 h-6"></i>
+            </div>
+            <div class="text-left">
+              <h4 class="font-bold text-white group-hover:text-red-400 transition-colors">YouTube @Cot_De</h4>
+              <p class="text-xs text-slate-400" data-i18n="biolinks.ytDesc">Deep dives, tutorials, and full video lectures</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 text-xs font-mono font-semibold text-red-400 group-hover:translate-x-1 transition-transform">
+            <span data-i18n="biolinks.subscribe">Subscribe</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+
+        <!-- TikTok Bio Link -->
+        <a href="https://www.tiktok.com/@cot_de" target="_blank" rel="noopener noreferrer"
+           class="group flex items-center justify-between p-5 rounded-2xl bg-brand-card border border-brand-neon/30 hover:border-brand-neon hover:bg-lime-950/20 shadow-lg hover:shadow-lime-500/10 transition-all hover:scale-[1.02]">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-lime-950/60 border border-brand-neon/50 flex items-center justify-center text-brand-neon group-hover:scale-110 transition-transform">
+              <i data-lucide="smartphone" class="w-6 h-6"></i>
+            </div>
+            <div class="text-left">
+              <h4 class="font-bold text-white group-hover:text-brand-neon transition-colors">TikTok @cot_de</h4>
+              <p class="text-xs text-slate-400" data-i18n="biolinks.ttDesc">Short bites, funny coding memes, and daily tech tips</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 text-xs font-mono font-semibold text-brand-neon group-hover:translate-x-1 transition-transform">
+            <span data-i18n="biolinks.follow">Follow</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== WORK & CONTACT SECTION ==================== -->
+  <section id="contact" class="py-20 relative">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      
+      <div class="p-8 sm:p-12 rounded-3xl bg-gradient-to-b from-brand-card to-brand-surface border border-brand-border shadow-glow-purple text-center relative overflow-hidden">
+        
+        <!-- Background Accent -->
+        <div class="absolute -right-16 -top-16 w-64 h-64 bg-brand-purple/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-brand-cyan/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10">
+          <span class="inline-block px-3 py-1 rounded-full bg-brand-surface border border-brand-border text-brand-cyan text-xs font-mono font-semibold mb-4" data-i18n="contact.tag">
+            💼 WORK &amp; COLLABORATION
+          </span>
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-white mb-4" data-i18n="contact.title">
+            Have a Project, CV, or Partnership?
+          </h3>
+          <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-8 leading-relaxed" data-i18n="contact.desc">
+            We are always open to exciting ideas, tech collaborations, sponsorships, or sharing a warm coffee with fellow coders. Drop either of us a message!
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+            
+            <!-- Contact Bảo -->
+            <a href="https://www.facebook.com/Bbao23.fb" target="_blank" rel="noopener noreferrer"
+               class="w-full sm:w-1/2 flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-brand-surface hover:bg-brand-border border border-brand-border text-white text-sm font-bold shadow hover:scale-105 transition-all">
+              <i data-lucide="message-circle" class="w-4 h-4 text-brand-neon"></i>
+              <span data-i18n="contact.btnBao">Chat with Bảo</span>
+            </a>
+
+            <!-- Contact Phong -->
+            <a href="https://www.facebook.com/thanh.phong.799769" target="_blank" rel="noopener noreferrer"
+               class="w-full sm:w-1/2 flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-brand-surface hover:bg-brand-border border border-brand-border text-white text-sm font-bold shadow hover:scale-105 transition-all">
+              <i data-lucide="message-circle" class="w-4 h-4 text-blue-400"></i>
+              <span data-i18n="contact.btnPhong">Chat with Phong</span>
+            </a>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="py-12 border-t border-brand-border/60 bg-brand-dark text-center">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      
+      <div class="flex items-center justify-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-brand-purple flex items-center justify-center font-mono font-bold text-white text-xs">
+          &lt;/&gt;
+        </div>
+        <span class="font-extrabold text-lg text-white">CỐT ĐÊ</span>
+      </div>
+
+      <p class="text-xs text-slate-400 font-mono mb-4" data-i18n="footer.slogan">
+        "Nơi đến người không học code cũng hiểu" • Where even non-coders get it.
+      </p>
+
+      <div class="flex items-center justify-center gap-6 text-sm text-slate-400 mb-6">
+        <a href="https://www.youtube.com/@Cot_De" target="_blank" rel="noopener noreferrer" class="hover:text-red-400 transition-colors">YouTube</a>
+        <a href="https://www.tiktok.com/@cot_de" target="_blank" rel="noopener noreferrer" class="hover:text-brand-neon transition-colors">TikTok</a>
+        <a href="https://www.facebook.com/Bbao23.fb" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors">Bảo</a>
+        <a href="https://www.facebook.com/thanh.phong.799769" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors">Phong</a>
+      </div>
+
+      <p class="text-xs text-slate-500">
+        &copy; <span id="current-year"></span> Cốt Đê. <span data-i18n="footer.rights">All rights reserved. Made with 💜 by Phong &amp; Bảo.</span>
+      </p>
+
+    </div>
+  </footer>
+
+  <!-- ==================== I18N DICTIONARY & SCRIPT ==================== -->
+  <script>
+    // Set dynamic current year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Complete Translations Dictionary (EN / VI)
+    const translations = {
+      en: {
+        "nav.founders": "Founders",
+        "nav.topics": "Topics",
+        "nav.links": "Channels",
+        "nav.contact": "Work Contact",
+        "header.subscribe": "Subscribe",
+
+        "hero.badge": "✨ GEN Z TECH COMMUNITY",
+        "hero.slogan": "“Where even non-coders get it.”",
+        "hero.description": "Demystifying coding, algorithms, CS university subjects, and AI with zero toxicity and 100% good vibes. Made by students, for future tech wizards.",
+        "hero.cta.youtube": "Watch on YouTube",
+        "hero.cta.tiktok": "Follow on TikTok",
+
+        "stats.founders": "Co-Founders",
+        "stats.free": "Free Knowledge",
+        "stats.boring": "Boring Theory",
+
+        "founders.tag": "// THE MINDS BEHIND THE CODE",
+        "founders.title": "Meet Phong & Bảo",
+        "founders.subtitle": "Two passionate CS students with a mission to make software development friendly, entertaining, and accessible to everyone.",
+        "founders.photoSimple": "Phong (Blue) • Bảo (White)",
+        "founders.phongRole": "Blue Ao Dai • \"The Kung-fu Coder\"",
+        "founders.phongBio": "Specializing in tackling hard bugs, clean code practices, and simplifying tricky algorithms with hilarious martial arts energy.",
+        "founders.contactPhong": "Connect on Facebook",
+        "founders.baoRole": "White Ao Dai • \"The Chill Architect\"",
+        "founders.baoBio": "Master of turning dense university curriculum and complex AI concepts into relatable stories that literally anyone can grasp.",
+        "founders.contactBao": "Connect on Facebook",
+
+        "topics.tag": "// WHAT WE TEACH",
+        "topics.title": "Core Pillars of Cốt Đê",
+        "topics.subtitle": "From absolute zero to cracking university exams and exploring next-gen artificial intelligence.",
+        "topics.t1.title": "Code From Scratch",
+        "topics.t1.desc": "No prerequisites needed. Start your coding adventure from line one with zero headaches.",
+        "topics.t2.title": "Simple Algorithms",
+        "topics.t2.desc": "Visualized and explained so simply that even your grandmother would pass a technical interview.",
+        "topics.t3.title": "CS College Prep",
+        "topics.t3.desc": "Survive and conquer university subjects: Data Structures, OOP, Databases, and Computer Networks.",
+        "topics.t4.title": "AI & Modern Tech",
+        "topics.t4.desc": "Practical AI tools, prompting tips, and modern engineering workflows that boost your superpowers.",
+
+        "biolinks.tag": "// OFFICIAL CHANNELS",
+        "biolinks.title": "Follow Cốt Đê",
+        "biolinks.subtitle": "Tap below to join our growing community of tech enthusiasts!",
+        "biolinks.ytDesc": "Deep dives, tutorials, and full video lectures",
+        "biolinks.subscribe": "Subscribe",
+        "biolinks.ttDesc": "Short bites, funny coding memes, and daily tech tips",
+        "biolinks.follow": "Follow",
+
+        "contact.tag": "💼 WORK & COLLABORATION",
+        "contact.title": "Have a Project, CV, or Partnership?",
+        "contact.desc": "We are always open to exciting ideas, tech collaborations, sponsorships, or sharing a warm coffee with fellow coders. Drop either of us a message!",
+        "contact.btnBao": "Chat with Bảo",
+        "contact.btnPhong": "Chat with Phong",
+
+        "footer.slogan": "\"Nơi đến người không học code cũng hiểu\" • Where even non-coders get it.",
+        "footer.rights": "All rights reserved. Made with 💜 by Phong & Bảo."
+      },
+      vi: {
+        "nav.founders": "Người sáng lập",
+        "nav.topics": "Chủ đề",
+        "nav.links": "Kênh mạng xã hội",
+        "nav.contact": "Liên hệ công việc",
+        "header.subscribe": "Đăng ký kênh",
+
+        "hero.badge": "✨ CỘNG ĐỒNG LẬP TRÌNH GEN Z",
+        "hero.slogan": "“Nơi đến người không học code cũng hiểu.”",
+        "hero.description": "Giải mã lập trình, thuật toán, các môn đại học CNTT và AI không độc hại, 100% năng lượng tích cực. Được tạo bởi sinh viên, dành cho những phù thủy công nghệ tương lai.",
+        "hero.cta.youtube": "Xem trên YouTube",
+        "hero.cta.tiktok": "Theo dõi trên TikTok",
+
+        "stats.founders": "Nhà sáng lập",
+        "stats.free": "Kiến thức miễn phí",
+        "stats.boring": "Lý thuyết hàn lâm",
+
+        "founders.tag": "// BỘ ĐÔI PHÍA SAU CỐT ĐÊ",
+        "founders.title": "Gặp gỡ Phong & Bảo",
+        "founders.subtitle": "Hai bạn sinh viên CNTT đam mê biến việc học phần mềm trở nên gần gũi, hài hước và ai cũng có thể tiếp cận được.",
+        "founders.photoSimple": "Phong (áo xanh) • Bảo (áo trắng)",
+        "founders.phongRole": "Áo dài xanh • \"Kiếm hiệp Coder\"",
+        "founders.phongBio": "Chuyên trị các bug hiểm hóc, rèn luyện tư duy code sạch và giải mã thuật toán với năng lượng kiếm hiệp vui vẻ.",
+        "founders.contactPhong": "Kết nối Facebook",
+        "founders.baoRole": "Áo dài trắng • \"Bậc thầy truyền cảm hứng\"",
+        "founders.baoBio": "Bậc thầy chuyển hóa các giáo trình đại học khô cứng và kiến thức AI phức tạp thành câu chuyện đời thường ai nghe cũng hiểu.",
+        "founders.contactBao": "Kết nối Facebook",
+
+        "topics.tag": "// CHỦ ĐỀ CHỦ LỰC",
+        "topics.title": "Bốn Trụ Cột Của Cốt Đê",
+        "topics.subtitle": "Từ con số 0 tròn trĩnh đến vượt qua các kỳ thi đại học và làm chủ công nghệ trí tuệ nhân tạo.",
+        "topics.t1.title": "Lập trình từ con số 0",
+        "topics.t1.desc": "Không cần nền tảng trước. Bắt đầu hành trình code ngay từ dòng lệnh đầu tiên mà không hề đau đầu.",
+        "topics.t2.title": "Thuật toán dễ hiểu",
+        "topics.t2.desc": "Trực quan hóa và giải thích đơn giản tới mức phụ huynh nghe cũng hiểu logic bài toán.",
+        "topics.t3.title": "Qua môn CNTT Đại học",
+        "topics.t3.desc": "Chiến lược vượt ải các môn xương xẩu: Cấu trúc dữ liệu, OOP, Cơ sở dữ liệu và Mạng máy tính.",
+        "topics.t4.title": "AI & Công nghệ mới",
+        "topics.t4.desc": "Ứng dụng các công cụ AI thực tế, bí kíp viết prompt và quy trình làm việc hiện đại cho Developer.",
+
+        "biolinks.tag": "// KÊNH CHÍNH THỨC",
+        "biolinks.title": "Theo Dõi Cốt Đê",
+        "biolinks.subtitle": "Bấm vào các liên kết bên dưới để gia nhập cộng đồng cùng chúng mình nhé!",
+        "biolinks.ytDesc": "Video bài giảng chi tiết, series dài tập và hướng dẫn chuyên sâu",
+        "biolinks.subscribe": "Đăng ký kênh",
+        "biolinks.ttDesc": "Video ngắn hài hước, meme lập trình và mẹo công nghệ mỗi ngày",
+        "biolinks.follow": "Theo dõi",
+
+        "contact.tag": "💼 LIÊN HỆ & HỢP TÁC",
+        "contact.title": "Bạn Có Dự Án, CV Hay Ý Tưởng Hợp Tác?",
+        "contact.desc": "Tụi mình luôn hào hứng đón nhận các cơ hội hợp tác, tài trợ hoặc đơn giản là một buổi cà phê giao lưu cùng anh em mê code. Nhắn tin cho tụi mình nhé!",
+        "contact.btnBao": "Nhắn tin cho Bảo",
+        "contact.btnPhong": "Nhắn tin cho Phong",
+
+        "footer.slogan": "\"Nơi đến người không học code cũng hiểu\" • Where even non-coders get it.",
+        "footer.rights": "Bảo lưu mọi quyền. Được tạo bằng 💜 bởi Phong & Bảo."
+      }
+    };
+
+    // Current language state (default: en)
+    let currentLang = 'en';
+
+    function setLanguage(lang) {
+      if (!translations[lang]) return;
+      currentLang = lang;
+      
+      // Update HTML lang attribute
+      document.documentElement.lang = lang;
+
+      // Update all translatable elements
+      const elements = document.querySelectorAll('[data-i18n]');
+      elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+
+      // Update switcher buttons UI
+      const btnEn = document.getElementById('lang-en');
+      const btnVi = document.getElementById('lang-vi');
+      
+      if (lang === 'en') {
+        btnEn.className = "px-2.5 py-1 rounded-full transition-all duration-200 bg-brand-purple text-white shadow-sm";
+        btnVi.className = "px-2.5 py-1 rounded-full transition-all duration-200 text-slate-400 hover:text-white";
+      } else {
+        btnVi.className = "px-2.5 py-1 rounded-full transition-all duration-200 bg-brand-purple text-white shadow-sm";
+        btnEn.className = "px-2.5 py-1 rounded-full transition-all duration-200 text-slate-400 hover:text-white";
+      }
+
+      // Save preference
+      localStorage.setItem('cotde_lang', lang);
+    }
+
+    // Initialize Language & Lucide Icons on DOM Load
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check saved preference or default to EN
+      const savedLang = localStorage.getItem('cotde_lang') || 'en';
+      setLanguage(savedLang);
+
+      // Render Lucide Icons
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    });
+  </script>
+
+</body>
+</html>
